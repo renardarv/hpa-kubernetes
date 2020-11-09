@@ -9,6 +9,7 @@ Steps:
 - Go run bash run.sh to deploy the application to run app in production
 
 You can create dev and stag container with command: \
+\
 ```docker build -t renardarv/landing-page-dev:latest .```\
 \
 OR \
