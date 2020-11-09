@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lp-dev-deployment
+  # namespace: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lp-dev
+  template:
+    metadata:
+      labels:
+        app: lp-dev
+    spec:
+      containers:
+      - name: lp-dev
+        image: renardarv/landing-page-dev:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 500m
+          limits:
+            memory: 500Mi
+            cpu: 1000m
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: lp-dev-service
+  # namespace: development
+spec:
+  ports:
+  - port: 80
+    # protocol: TCP
+    #type: LoadBalancer
+  selector:
+    app: lp-dev
+
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lp-dev-deployment
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lp-dev-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lp-dev-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: lp.renard.my.id
+    http:
+      paths:
+      #- path: /
+      - backend:
+          serviceName: lp-dev-service
+          servicePort: 80

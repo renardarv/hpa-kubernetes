@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lp-stag-deployment
+  # namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lp-stag
+  template:
+    metadata:
+      labels:
+        app: lp-stag
+    spec:
+      containers:
+      - name: lp-stag-deployment
+        image: renardarv/landing-page:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: 50Mi
+            cpu: 500m
+          limits:
+            memory: 500Mi
+            cpu: 1000m
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: lp-stag-service
+  # namespace: production
+spec:
+  ports:
+  - port: 80
+    # protocol: TCP
+    #type: LoadBalancer
+  selector:
+    app: lp-stag
+
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: lp-stag
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: lp-stag-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+
+---
+
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: lp-stag-ingress
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   rules:
+#   - host: lp.renard.my.id
+#     http:
+#       paths:
+#       #- path: /
+#       - backend:
+#           serviceName: lp-stag-service
+#           servicePort: 80
