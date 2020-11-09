@@ -18,6 +18,4 @@ kubectl apply -f promotheus.yaml
 kubectl apply -f grafana.yaml
 
 # deploy application in dev,stag, and prod
-kubectl apply -f hpa-deployemnt-dev.yaml
-kubectl apply -f hpa-deployment-stag.yaml
 kubectl apply -f hpa-deployment-prod.yaml
