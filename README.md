@@ -8,5 +8,7 @@ Steps:
 - Docker login to push container in docker hub
 - Go run bash run.sh to deploy the application to run app in production
 
-You can create dev and stag container with command:
-```docker build -t renardarv/landing-page:latest .```
+You can create dev and stag container with command: br\
+```docker build -t renardarv/landing-page-dev:latest .```\
+OR \
+```docker build -t renardarv/landing-page-stag:latest .```
