@@ -1,8 +1,9 @@
 # hpa-kubernetes
 
-First create kubernetes cluster with AWS VPS
-Configure kube config AWS with your terminal
+Steps:
 
-Create ACM to get secure app with https
-
-Go run bash run.sh to deploy application 
+- First create a Kubernetes cluster with AWS VPS
+- Configure Kube config AWS with your terminal
+- Create ACM to get the secure app with https
+- Docker login to push container in docker hub
+- Go run bash run.sh to deploy the application 
