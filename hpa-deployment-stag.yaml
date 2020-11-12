@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: lp-stag-deployment
-        image: renardarv/landing-page:latest
+        image: renardarv/landing-page-stag:latest
         ports:
         - containerPort: 80
         resources:
